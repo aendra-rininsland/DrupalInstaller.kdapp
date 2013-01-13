@@ -3,7 +3,7 @@
 #
 
 appView.addSubView split = new WpSplit
-  cssClass  : "drupal-installer"
+  cssClass  : "wp-installer"
   type      : "horizontal"
   resizable : no
   sizes     : ["100%",null]

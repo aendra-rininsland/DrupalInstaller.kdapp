@@ -32,15 +32,15 @@ class InstallPane extends Pane
           ]
       fields                :
         name                :
-          label             : "Name of your Drupal site:"
+          label             : "Name of your blog:"
           name              : "name"
-          placeholder       : "type a name for your Drupal site..."
+          placeholder       : "type a name for your blog..."
           defaultValue      : "My Drupal"
           validate          :
             rules           :
               required      : "yes"
             messages        :
-              required      : "a name for your Drupal site is required!"
+              required      : "a name for your Drupal is required!"
           keyup             : => @completeInputs()
           blur              : => @completeInputs()
         domain              :
@@ -55,8 +55,8 @@ class InstallPane extends Pane
         path                :
           label             : "Path :"
           name              : "path"
-          placeholder       : "type a path for your Drupal site..."
-          hint              : "leave empty if you want your Drupal site to work on your domain root"
+          placeholder       : "type a path for your blog..."
+          hint              : "leave empty if you want your blog to work on your domain root"
           defaultValue      : "my-drupal"
           keyup             : => @completeInputs yes
           blur              : => @completeInputs yes
@@ -124,7 +124,7 @@ class InstallPane extends Pane
 
     successCb = (dbinfo)=>
       installWordpress formData, dbinfo, (path, timestamp)=>
-        @emit "DrupalInstalled", formData
+        @emit "WordPressInstalled", formData
         @form.buttons["Install Drupal"].hideLoader()
     
     checkPath formData, (err, response)=>

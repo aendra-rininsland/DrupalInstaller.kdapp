@@ -7,7 +7,7 @@ class DashboardPane extends Pane
     @listController = new KDListViewController
       lastToFirst     : yes
       viewOptions     :
-        type          : "drupal"
+        type          : "wp-blog"
         itemClass     : InstalledAppListItem
 
     @listWrapper = @listController.getView()
@@ -15,7 +15,7 @@ class DashboardPane extends Pane
     @notice = new KDCustomHTMLView
       tagName : "p"
       cssClass: "why-u-no"
-      partial : "y u no create Drupalzzzz!!!"
+      partial : "y u no create Drupal!!!"
 
     @notice.hide()
 
@@ -139,7 +139,7 @@ class InstalledAppListItem extends KDListItemView
 
   constructor:(options, data)->
 
-    options.type = "drupal"
+    options.type = "wp-blog"
 
     super options, data
 
@@ -160,7 +160,7 @@ class InstalledAppListItem extends KDListItemView
     """
     {{> @delete}}
     <a target='_blank' class='name-link' href='#{url}'>{{ #(name)}}</a>
-    <a target='_blank' class='admin-link' href='#{url}#{if path is "" then '' else '/'}admin'>Admin</a>
+    <a target='_blank' class='admin-link' href='#{url}#{if path is "" then '' else '/'}wp-admin'>Admin</a>
     <a target='_blank' class='raw-link' href='#{url}'>#{url}</a>
     <time datetime='#{new Date(timestamp)}'>#{$.timeago new Date(timestamp)}</time>
     """

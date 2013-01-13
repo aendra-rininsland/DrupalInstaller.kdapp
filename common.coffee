@@ -27,7 +27,7 @@ class WpApp extends JView
         "Dashboard" :
           cssClass  : "clean-gray toggle"
           callback  : => @dashboardTabs.showPaneByIndex 0
-        "Install a new Wordpress" :
+        "Install a new Drupal" :
           cssClass  : "clean-gray"
           callback  : => @dashboardTabs.showPaneByIndex 1
 
@@ -35,7 +35,7 @@ class WpApp extends JView
       if pane.name is "dashboard"
         @buttonGroup.buttonReceivedClick @buttonGroup.buttons.Dashboard
       else
-        @buttonGroup.buttonReceivedClick @buttonGroup.buttons["Install a new Wordpress"]
+        @buttonGroup.buttonReceivedClick @buttonGroup.buttons["Install a new Drupal"]
 
   viewAppended:->
 
@@ -71,8 +71,8 @@ class WpApp extends JView
     <header>
       <figure></figure>
       <article>
-        <h3>Wordpress Installer</h3>
-        <p>This application installs wordpress instances and gives you a dashboard of what is already installed</p>
+        <h3>Drupal Installer</h3>
+        <p>This application installs Drupal instances and gives you a dashboard of what is already installed</p>
       </article>
       <section>
       {{> @buttonGroup}}
