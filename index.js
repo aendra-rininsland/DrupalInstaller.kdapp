@@ -1,4 +1,4 @@
-// Compiled by Koding Servers at Mon Jan 14 2013 02:11:40 GMT-0800 (PST) in server time
+// Compiled by Koding Servers at Mon Jan 14 2013 04:03:48 GMT-0800 (PST) in server time
 
 (function() {
 
@@ -236,7 +236,7 @@ installWordpress = function(formData, dbinfo, callback) {
     command = cmds[index];
     if (cmds.length === index || !command) {
       parseOutput("<br>#############");
-      parseOutput("<br>Wordpress successfully installed to: " + userDir + path);
+      parseOutput("<br>Drupal 7 successfully installed to: " + userDir + path);
       parseOutput("<br>#############<br>");
       parseOutput("<br><br><br>");
       appStorage.fetchValue('blogs', function(blogs) {
@@ -248,7 +248,7 @@ installWordpress = function(formData, dbinfo, callback) {
         callback(formData);
       }
       return KD.utils.wait(1000, function() {
-        return appManager.openFileWithApplication("http://" + nickname + ".koding.com/" + path + "/wp-admin/install.php", "Viewer");
+        return appManager.openFileWithApplication("http://" + nickname + ".koding.com/" + path + "/install.php", "Viewer");
       });
     } else {
       parseOutput("$ " + command + "<br/>");
