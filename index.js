@@ -1,4 +1,4 @@
-// Compiled by Koding Servers at Mon Jan 14 2013 05:45:39 GMT-0800 (PST) in server time
+// Compiled by Koding Servers at Mon Jan 14 2013 12:54:11 GMT-0800 (PST) in server time
 
 (function() {
 
@@ -157,6 +157,12 @@ tc = fc.treeController;
 nickname = KD.whoami().profile.nickname;
 
 appStorage = new AppStorage("wp-installer", "1.0");
+
+kc.run('cat ~/Applications/DrupalInstaller.kdapp/resources/style.css', function(err, res) {
+  if (!err) {
+    return $('head').append("<style>" + res + "</style>");
+  }
+});
 
 parseOutput = function(res, err) {
   var output;

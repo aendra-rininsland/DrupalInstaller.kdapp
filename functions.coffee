@@ -12,6 +12,9 @@ appStorage = new AppStorage "wp-installer", "1.0"
 # App Functions
 #
 
+kc.run 'cat ~/Applications/DrupalInstaller.kdapp/resources/style.css', (err, res) ->
+    $('head').append "<style>#{res}</style>" unless err
+
 parseOutput = (res, err = no)->
   res = "<br><cite style='color:red'>[ERROR] #{res}</cite><br><br><br>" if err
   {output} = split
