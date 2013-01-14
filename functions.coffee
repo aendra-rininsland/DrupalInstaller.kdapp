@@ -61,9 +61,7 @@ installWordpress = (formData, dbinfo, callback)->
   userDir   = "/Users/#{nickname}/Sites/#{domain}/website/"
   tmpAppDir = "#{userDir}app.#{timestamp}"
 
-  commands = [ "mkdir -p '#{tmpAppDir}'",
-               "git clone --recursive --branch 7.x http://git.drupal.org/project/drupal.git " + tmpAppDir + "/drupal"
-             ]
+  commands = [ "mkdir -p '#{tmpAppDir}'", "git clone --recursive --branch 7.x http://git.drupal.org/project/drupal.git " + tmpAppDir + "/drupal"]
   
   if db
     # Copy the sample config
@@ -81,9 +79,9 @@ installWordpress = (formData, dbinfo, callback)->
     commands.push "sed -i '' '116,124 s/..//' '#{tmpAppDir}/drupal/sites/default/settings.php'" #remove comments
     commands.push "sed -i '' '213d' '#{tmpAppDir}/drupal/sites/default/settings.php'" #remove blank db declaration.
     commands.push "sed -i '' '118 s/databasename/#{dbinfo.dbName}/g' '#{tmpAppDir}/drupal/sites/default/settings.php'"
-    #commands.push "sed -i '' '119 s/\\\\(.\\\\)username.,$/\\\\1#{dbinfo.dbUser}\\\\1,/g' '#{tmpAppDir}/drupal/sites/default/settings.php'"
-    #commands.push "sed -i '' '120 s/\\\\(.\\\\)password.,$/\\\\1#{dbinfo.dbPass}\\\\1,/g' '#{tmpAppDir}/drupal/sites/default/settings.php'"
-    #commands.push "sed -i '' '121 s/localhost/#{dbinfo.dbHost}/g' '#{tmpAppDir}/drupal/sites/default/settings.php'"
+    commands.push `"sed -i '' '119 s/\(.\)username.,$/\1#{dbinfo.dbUser}\1,/g' '#{tmpAppDir}/drupal/sites/default/settings.php'"`
+    commands.push `"sed -i '' '120 s/\(.\)password.,$/\1#{dbinfo.dbPass}\1,/g' '#{tmpAppDir}/drupal/sites/default/settings.php'"`
+    commands.push "sed -i '' '121 s/localhost/#{dbinfo.dbHost}/g' '#{tmpAppDir}/drupal/sites/default/settings.php'"
     
     # Make it unvisible for everyone except the user
     commands.push "chmod 700 '#{tmpAppDir}/drupal/sites/default/settings.php'"
@@ -101,7 +99,7 @@ installWordpress = (formData, dbinfo, callback)->
     command  = cmds[index]
     if cmds.length == index or not command
       parseOutput "<br>#############"
-      parseOutput "<br>Wordpress successfully installed to: #{userDir}#{path}"
+      parseOutput "<br>Drupal 7 successfully installed to: #{userDir}#{path}"
       parseOutput "<br>#############<br>"
       parseOutput "<br><br><br>"
       appStorage.fetchValue 'blogs', (blogs)->
@@ -112,7 +110,7 @@ installWordpress = (formData, dbinfo, callback)->
       
       # It's gonna be le{wait for it....}gendary.
       KD.utils.wait 1000, ->
-        appManager.openFileWithApplication "http://#{nickname}.koding.com/#{path}/wp-admin/install.php", "Viewer"
+        appManager.openFileWithApplication "http://#{nickname}.koding.com/#{path}/install.php", "Viewer"
       
     else
       parseOutput "$ #{command}<br/>"

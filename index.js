@@ -1,4 +1,4 @@
-// Compiled by Koding Servers at Sun Jan 13 2013 03:26:20 GMT-0800 (PST) in server time
+// Compiled by Koding Servers at Mon Jan 14 2013 02:11:40 GMT-0800 (PST) in server time
 
 (function() {
 
@@ -146,8 +146,7 @@ Pane = (function(_super) {
 
 /* BLOCK STARTS /Source: /Users/aendrew/Applications/DrupalInstaller.kdapp/functions.coffee */
 
-var appStorage, checkPath, fc, installWordpress, kc, nickname, parseOutput, prepareDb, runInQueue, tc,
-  _this = this;
+var appStorage, checkPath, fc, installWordpress, kc, nickname, parseOutput, prepareDb, tc;
 
 kc = KD.getSingleton("kiteController");
 
@@ -210,62 +209,61 @@ checkPath = function(formData, callback) {
 };
 
 installWordpress = function(formData, dbinfo, callback) {
-  var commands, db, domain, path, timestamp, tmpAppDir, userDir;
+  var commands, db, domain, path, runInQueue, timestamp, tmpAppDir, userDir,
+    _this = this;
   path = formData.path, domain = formData.domain, timestamp = formData.timestamp, db = formData.db;
   userDir = "/Users/" + nickname + "/Sites/" + domain + "/website/";
   tmpAppDir = "" + userDir + "app." + timestamp;
-  return commands = ["mkdir -p '" + tmpAppDir + "'", "git clone --recursive --branch 7.x http://git.drupal.org/project/drupal.git " + tmpAppDir + "/drupal"];
-};
-
-if (db) {
-  commands.push("cp '" + tmpAppDir + "/drupal/sites/default/default.settings.php' '" + tmpAppDir + "/drupal/sites/default/settings.php'");
-  commands.push("sed -i '' '116,124 s/..//' '" + tmpAppDir + "/drupal/sites/default/settings.php'");
-  commands.push("sed -i '' '213d' '" + tmpAppDir + "/drupal/sites/default/settings.php'");
-  commands.push("sed -i '' '118 s/databasename/" + dbinfo.dbName + "/g' '" + tmpAppDir + "/drupal/sites/default/settings.php'");
-  commands.push("chmod 700 '" + tmpAppDir + "/drupal/sites/default/settings.php'");
-}
-
-if (path === "") {
-  commands.push("cp -R " + tmpAppDir + "/drupal/* " + userDir);
-} else {
-  commands.push("mv '" + tmpAppDir + "/drupal' '" + userDir + path + "'");
-}
-
-commands.push("rm -rf '" + tmpAppDir + "'");
-
-runInQueue = function(cmds, index) {
-  var command;
-  command = cmds[index];
-  if (cmds.length === index || !command) {
-    parseOutput("<br>#############");
-    parseOutput("<br>Wordpress successfully installed to: " + userDir + path);
-    parseOutput("<br>#############<br>");
-    parseOutput("<br><br><br>");
-    appStorage.fetchValue('blogs', function(blogs) {
-      blogs || (blogs = []);
-      blogs.push(formData);
-      return appStorage.setValue("blogs", blogs);
-    });
-    if (typeof callback === "function") {
-      callback(formData);
-    }
-    return KD.utils.wait(1000, function() {
-      return appManager.openFileWithApplication("http://" + nickname + ".koding.com/" + path + "/wp-admin/install.php", "Viewer");
-    });
-  } else {
-    parseOutput("$ " + command + "<br/>");
-    return kc.run(command, function(err, res) {
-      if (err) {
-        return parseOutput(err, true);
-      } else {
-        parseOutput(res + '<br/>');
-        return runInQueue(cmds, index + 1);
-      }
-    });
+  commands = ["mkdir -p '" + tmpAppDir + "'", "git clone --recursive --branch 7.x http://git.drupal.org/project/drupal.git " + tmpAppDir + "/drupal"];
+  if (db) {
+    commands.push("cp '" + tmpAppDir + "/drupal/sites/default/default.settings.php' '" + tmpAppDir + "/drupal/sites/default/settings.php'");
+    commands.push("sed -i '' '116,124 s/..//' '" + tmpAppDir + "/drupal/sites/default/settings.php'");
+    commands.push("sed -i '' '213d' '" + tmpAppDir + "/drupal/sites/default/settings.php'");
+    commands.push("sed -i '' '118 s/databasename/" + dbinfo.dbName + "/g' '" + tmpAppDir + "/drupal/sites/default/settings.php'");
+    commands.push("sed -i '' '119 s/\(.\)username.,$/\1#{dbinfo.dbUser}\1,/g' '#{tmpAppDir}/drupal/sites/default/settings.php'");
+    commands.push("sed -i '' '120 s/\(.\)password.,$/\1#{dbinfo.dbPass}\1,/g' '#{tmpAppDir}/drupal/sites/default/settings.php'");
+    commands.push("sed -i '' '121 s/localhost/" + dbinfo.dbHost + "/g' '" + tmpAppDir + "/drupal/sites/default/settings.php'");
+    commands.push("chmod 700 '" + tmpAppDir + "/drupal/sites/default/settings.php'");
   }
+  if (path === "") {
+    commands.push("cp -R " + tmpAppDir + "/drupal/* " + userDir);
+  } else {
+    commands.push("mv '" + tmpAppDir + "/drupal' '" + userDir + path + "'");
+  }
+  commands.push("rm -rf '" + tmpAppDir + "'");
+  runInQueue = function(cmds, index) {
+    var command;
+    command = cmds[index];
+    if (cmds.length === index || !command) {
+      parseOutput("<br>#############");
+      parseOutput("<br>Wordpress successfully installed to: " + userDir + path);
+      parseOutput("<br>#############<br>");
+      parseOutput("<br><br><br>");
+      appStorage.fetchValue('blogs', function(blogs) {
+        blogs || (blogs = []);
+        blogs.push(formData);
+        return appStorage.setValue("blogs", blogs);
+      });
+      if (typeof callback === "function") {
+        callback(formData);
+      }
+      return KD.utils.wait(1000, function() {
+        return appManager.openFileWithApplication("http://" + nickname + ".koding.com/" + path + "/wp-admin/install.php", "Viewer");
+      });
+    } else {
+      parseOutput("$ " + command + "<br/>");
+      return kc.run(command, function(err, res) {
+        if (err) {
+          return parseOutput(err, true);
+        } else {
+          parseOutput(res + '<br/>');
+          return runInQueue(cmds, index + 1);
+        }
+      });
+    }
+  };
+  return runInQueue(commands, 0);
 };
-
-runInQueue(commands, 0);
 
 
 /* BLOCK ENDS */
