@@ -1,4 +1,4 @@
-// Compiled by Koding Servers at Mon Jan 14 2013 04:03:48 GMT-0800 (PST) in server time
+// Compiled by Koding Servers at Mon Jan 14 2013 05:45:39 GMT-0800 (PST) in server time
 
 (function() {
 
@@ -217,12 +217,6 @@ installWordpress = function(formData, dbinfo, callback) {
   commands = ["mkdir -p '" + tmpAppDir + "'", "git clone --recursive --branch 7.x http://git.drupal.org/project/drupal.git " + tmpAppDir + "/drupal"];
   if (db) {
     commands.push("cp '" + tmpAppDir + "/drupal/sites/default/default.settings.php' '" + tmpAppDir + "/drupal/sites/default/settings.php'");
-    commands.push("sed -i '' '116,124 s/..//' '" + tmpAppDir + "/drupal/sites/default/settings.php'");
-    commands.push("sed -i '' '213d' '" + tmpAppDir + "/drupal/sites/default/settings.php'");
-    commands.push("sed -i '' '118 s/databasename/" + dbinfo.dbName + "/g' '" + tmpAppDir + "/drupal/sites/default/settings.php'");
-    commands.push("sed -i '' '119 s/\(.\)username.,$/\1#{dbinfo.dbUser}\1,/g' '#{tmpAppDir}/drupal/sites/default/settings.php'");
-    commands.push("sed -i '' '120 s/\(.\)password.,$/\1#{dbinfo.dbPass}\1,/g' '#{tmpAppDir}/drupal/sites/default/settings.php'");
-    commands.push("sed -i '' '121 s/localhost/" + dbinfo.dbHost + "/g' '" + tmpAppDir + "/drupal/sites/default/settings.php'");
     commands.push("chmod 700 '" + tmpAppDir + "/drupal/sites/default/settings.php'");
   }
   if (path === "") {

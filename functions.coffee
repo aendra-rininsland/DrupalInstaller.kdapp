@@ -67,21 +67,16 @@ installWordpress = (formData, dbinfo, callback)->
     # Copy the sample config
     commands.push "cp '#{tmpAppDir}/drupal/sites/default/default.settings.php' '#{tmpAppDir}/drupal/sites/default/settings.php'"
     
-    # This ugly line fetchs randomly generated SALT from api.wordpress for each install and put them to the wp-config.php
-    # commands.push """printf '%s\n' "g/put your unique phrase here/d" a "$(curl -L https://api.wordpress.org/secret-key/1.1/salt/)" . w | ed -s #{tmpAppDir}/wordpress/wp-config.php"""
-    
     # Put correct settings
-    #commands.push "sed -i '' 's/database_name_here/#{dbinfo.dbName}/g' '#{tmpAppDir}/wordpress/wp-config.php'"
-    #commands.push "sed -i '' 's/username_here/#{dbinfo.dbUser}/g' '#{tmpAppDir}/wordpress/wp-config.php'"
-    #commands.push "sed -i '' 's/password_here/#{dbinfo.dbPass}/g' '#{tmpAppDir}/wordpress/wp-config.php'"
-    #commands.push "sed -i '' 's/localhost/#{dbinfo.dbHost}/g' '#{tmpAppDir}/wordpress/wp-config.php'"
+    
+    # @todo -- Make sed work.
 
-    commands.push "sed -i '' '116,124 s/..//' '#{tmpAppDir}/drupal/sites/default/settings.php'" #remove comments
-    commands.push "sed -i '' '213d' '#{tmpAppDir}/drupal/sites/default/settings.php'" #remove blank db declaration.
-    commands.push "sed -i '' '118 s/databasename/#{dbinfo.dbName}/g' '#{tmpAppDir}/drupal/sites/default/settings.php'"
-    commands.push `"sed -i '' '119 s/\(.\)username.,$/\1#{dbinfo.dbUser}\1,/g' '#{tmpAppDir}/drupal/sites/default/settings.php'"`
-    commands.push `"sed -i '' '120 s/\(.\)password.,$/\1#{dbinfo.dbPass}\1,/g' '#{tmpAppDir}/drupal/sites/default/settings.php'"`
-    commands.push "sed -i '' '121 s/localhost/#{dbinfo.dbHost}/g' '#{tmpAppDir}/drupal/sites/default/settings.php'"
+    #commands.push "sed -i '116,124 s/^..//' '#{tmpAppDir}/drupal/sites/default/settings.php'"
+    #commands.push "sed -i '213d' '#{tmpAppDir}/drupal/sites/default/settings.php'"
+    #commands.push "sed -i '118 s/databasename/#{dbinfo.dbName}/g' '#{tmpAppDir}/drupal/sites/default/settings.php'"`
+    #commands.push "sed -i '119 s/\\(.\\)username.,$/\\1#{dbinfo.dbUser}\\1,/g' '#{tmpAppDir}/drupal/sites/default/settings.php'"`
+    #commands.push "sed -i '120 s/\\(.\\)password.,$/\\1#{dbinfo.dbPass}\\1,/g' '#{tmpAppDir}/drupal/sites/default/settings.php'"`
+    #commands.push "sed -i '121 s/localhost/#{dbinfo.dbHost}/g' '#{tmpAppDir}/drupal/sites/default/settings.php'"`
     
     # Make it unvisible for everyone except the user
     commands.push "chmod 700 '#{tmpAppDir}/drupal/sites/default/settings.php'"
