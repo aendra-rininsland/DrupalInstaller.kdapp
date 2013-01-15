@@ -1,4 +1,4 @@
-// Compiled by Koding Servers at Mon Jan 14 2013 16:35:46 GMT-0800 (PST) in server time
+// Compiled by Koding Servers at Mon Jan 14 2013 17:28:47 GMT-0800 (PST) in server time
 
 (function() {
 
@@ -6,17 +6,17 @@
 
 /* BLOCK STARTS /Source: /Users/aendrew/Applications/DrupalInstaller.kdapp/common.coffee */
 
-var Pane, WpApp, WpSplit,
+var DrupalApp, DrupalSplit, Pane,
   __hasProp = {}.hasOwnProperty,
   __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
-WpApp = (function(_super) {
+DrupalApp = (function(_super) {
 
-  __extends(WpApp, _super);
+  __extends(DrupalApp, _super);
 
-  function WpApp() {
+  function DrupalApp() {
     var _this = this;
-    WpApp.__super__.constructor.apply(this, arguments);
+    DrupalApp.__super__.constructor.apply(this, arguments);
     this.listenWindowResize();
     this.dashboardTabs = new KDTabView({
       hideHandleCloseIcons: true,
@@ -61,9 +61,9 @@ WpApp = (function(_super) {
     });
   }
 
-  WpApp.prototype.viewAppended = function() {
+  DrupalApp.prototype.viewAppended = function() {
     var dashboard, installPane;
-    WpApp.__super__.viewAppended.apply(this, arguments);
+    DrupalApp.__super__.viewAppended.apply(this, arguments);
     this.dashboardTabs.addPane(dashboard = new DashboardPane({
       cssClass: "dashboard",
       name: "dashboard"
@@ -87,38 +87,38 @@ WpApp = (function(_super) {
     return this._windowDidResize();
   };
 
-  WpApp.prototype._windowDidResize = function() {
+  DrupalApp.prototype._windowDidResize = function() {
     return this.dashboardTabs.setHeight(this.getHeight() - this.$('>header').height());
   };
 
-  WpApp.prototype.pistachio = function() {
+  DrupalApp.prototype.pistachio = function() {
     return "<header>\n  <figure></figure>\n  <article>\n    <h3>Drupal Installer</h3>\n    <p>This application installs Drupal instances and gives you a dashboard of what is already installed</p>\n  </article>\n  <section>\n  {{> this.buttonGroup}}\n  {{> this.consoleToggle}}\n  </section>\n</header>\n{{> this.dashboardTabs}}";
   };
 
-  return WpApp;
+  return DrupalApp;
 
 })(JView);
 
-WpSplit = (function(_super) {
+DrupalSplit = (function(_super) {
 
-  __extends(WpSplit, _super);
+  __extends(DrupalSplit, _super);
 
-  function WpSplit(options, data) {
+  function DrupalSplit(options, data) {
     this.output = new KDScrollView({
       tagName: "pre",
       cssClass: "terminal-screen"
     });
-    this.wpApp = new WpApp;
-    options.views = [this.wpApp, this.output];
-    WpSplit.__super__.constructor.call(this, options, data);
+    this.drupalApp = new DrupalApp;
+    options.views = [this.drupalApp, this.output];
+    DrupalSplit.__super__.constructor.call(this, options, data);
   }
 
-  WpSplit.prototype.viewAppended = function() {
-    WpSplit.__super__.viewAppended.apply(this, arguments);
+  DrupalSplit.prototype.viewAppended = function() {
+    DrupalSplit.__super__.viewAppended.apply(this, arguments);
     return this.panels[1].setClass("terminal-tab");
   };
 
-  return WpSplit;
+  return DrupalSplit;
 
 })(KDSplitView);
 
@@ -715,7 +715,7 @@ InstallPane = (function(_super) {
 
 var split;
 
-appView.addSubView(split = new WpSplit({
+appView.addSubView(split = new DrupalSplit({
   cssClass: "wp-installer",
   type: "horizontal",
   resizable: false,

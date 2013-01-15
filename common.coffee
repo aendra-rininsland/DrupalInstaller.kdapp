@@ -1,4 +1,4 @@
-class WpApp extends JView
+class DrupalApp extends JView
 
   constructor:->
 
@@ -82,7 +82,7 @@ class WpApp extends JView
     {{> @dashboardTabs}}
     """
 
-class WpSplit extends KDSplitView
+class DrupalSplit extends KDSplitView
 
   constructor:(options, data)->
 
@@ -90,9 +90,9 @@ class WpSplit extends KDSplitView
       tagName  : "pre"
       cssClass : "terminal-screen"
 
-    @wpApp = new WpApp
+    @drupalApp = new DrupalApp
 
-    options.views = [ @wpApp, @output ]
+    options.views = [ @drupalApp, @output ]
 
     super options, data
 

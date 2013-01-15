@@ -3,7 +3,7 @@
   "version": "0.1",
   "author": "Ændrew Rininsland",
   "repo": "git://github.com/aendrew/DrupalInstaller.kdapp.git",
-  "description": "This is a Drupal Installer for Koding",
+  "description": "This is a Drupal Installer for Koding, based on work by @gokmen",
   "path": "~/Applications/DrupalInstaller.kdapp/",
   "category": "web-app",
   "source": {
