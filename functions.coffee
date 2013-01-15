@@ -6,7 +6,7 @@ kc         = KD.getSingleton "kiteController"
 fc         = KD.getSingleton "finderController"
 tc         = fc.treeController
 {nickname} = KD.whoami().profile
-appStorage = new AppStorage "wp-installer", "1.0"
+appStorage = new AppStorage "drupal-installer", "1.0"
 
 #
 # App Functions
