@@ -1,4 +1,4 @@
-// Compiled by Koding Servers at Mon Jan 14 2013 12:54:11 GMT-0800 (PST) in server time
+// Compiled by Koding Servers at Mon Jan 14 2013 16:35:46 GMT-0800 (PST) in server time
 
 (function() {
 
@@ -220,9 +220,11 @@ installWordpress = function(formData, dbinfo, callback) {
   path = formData.path, domain = formData.domain, timestamp = formData.timestamp, db = formData.db;
   userDir = "/Users/" + nickname + "/Sites/" + domain + "/website/";
   tmpAppDir = "" + userDir + "app." + timestamp;
-  commands = ["mkdir -p '" + tmpAppDir + "'", "git clone --recursive --branch 7.x http://git.drupal.org/project/drupal.git " + tmpAppDir + "/drupal"];
+  commands = ["mkdir -p '" + tmpAppDir + "'", "mkdir -p '" + tmpAppDir + "/drupal'", "if [ -f drupal.tar.gz ]; then rm drupal.tar.gz; fi", "curl --location http://drupalcode.org/project/drupal.git/snapshot/refs/heads/7.x.tar.gz > drupal.tar.gz", "tar -xzvf drupal.tar.gz -C " + tmpAppDir + "/drupal --strip-components=1", "rm drupal.tar.gz"];
   if (db) {
     commands.push("cp '" + tmpAppDir + "/drupal/sites/default/default.settings.php' '" + tmpAppDir + "/drupal/sites/default/settings.php'");
+    commands.push("if [ ! -f /Users/" + nickname + "/drush/drush.php ]; then curl --location http://ftp.drupal.org/files/projects/drush-7.x-5.8.tar.gz > drush.tar.gz; mkdir -p /Users/" + nickname + "/drush; tar -xzvf drush.tar.gz -C /Users/" + nickname + "/drush  --strip-components=1; echo 'export PATH=$PATH:/Users/" + nickname + "/drush' >> /Users/" + nickname + "/.bashrc; rm drush.tar.gz; fi");
+    commands.push("php /Users/" + nickname + "/drush/drush.php -y --root=" + tmpAppDir + "/drupal site-install standard --account-name=admin --account-pass=" + dbinfo.dbPass + " --db-url=mysql://" + dbinfo.dbUser + ":" + dbinfo.dbPass + "@" + dbinfo.dbHost + "/" + dbinfo.dbName);
     commands.push("chmod 700 '" + tmpAppDir + "/drupal/sites/default/settings.php'");
   }
   if (path === "") {
@@ -237,7 +239,10 @@ installWordpress = function(formData, dbinfo, callback) {
     if (cmds.length === index || !command) {
       parseOutput("<br>#############");
       parseOutput("<br>Drupal 7 successfully installed to: " + userDir + path);
-      parseOutput("<br>#############<br>");
+      parseOutput("<br>#############<br><br>");
+      parseOutput("<br>####IMPORTANT####<br>");
+      parseOutput("<br>username: admin<br>");
+      parseOutput("<br>password: " + dbinfo.dbPass + "<br>");
       parseOutput("<br><br><br>");
       appStorage.fetchValue('blogs', function(blogs) {
         blogs || (blogs = []);
@@ -248,7 +253,7 @@ installWordpress = function(formData, dbinfo, callback) {
         callback(formData);
       }
       return KD.utils.wait(1000, function() {
-        return appManager.openFileWithApplication("http://" + nickname + ".koding.com/" + path + "/install.php", "Viewer");
+        return appManager.openFileWithApplication("http://" + nickname + ".koding.com/" + path + "/", "Viewer");
       });
     } else {
       parseOutput("$ " + command + "<br/>");
@@ -294,7 +299,7 @@ DashboardPane = (function(_super) {
     this.notice = new KDCustomHTMLView({
       tagName: "p",
       cssClass: "why-u-no",
-      partial: "y u no create Drupal!!!"
+      partial: "No sites created yet."
     });
     this.notice.hide();
     this.loader = new KDLoaderView({

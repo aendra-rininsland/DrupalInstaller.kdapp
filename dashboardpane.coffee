@@ -15,7 +15,7 @@ class DashboardPane extends Pane
     @notice = new KDCustomHTMLView
       tagName : "p"
       cssClass: "why-u-no"
-      partial : "y u no create Drupal!!!"
+      partial : "No sites created yet."
 
     @notice.hide()
 

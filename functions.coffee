@@ -64,7 +64,7 @@ installWordpress = (formData, dbinfo, callback)->
   userDir   = "/Users/#{nickname}/Sites/#{domain}/website/"
   tmpAppDir = "#{userDir}app.#{timestamp}"
 
-  commands = [ "mkdir -p '#{tmpAppDir}'", "git clone --recursive --branch 7.x http://git.drupal.org/project/drupal.git " + tmpAppDir + "/drupal"]
+  commands = [ "mkdir -p '#{tmpAppDir}'", "mkdir -p '#{tmpAppDir}/drupal'", "if [ -f drupal.tar.gz ]; then rm drupal.tar.gz; fi", "curl --location http://drupalcode.org/project/drupal.git/snapshot/refs/heads/7.x.tar.gz > drupal.tar.gz", "tar -xzvf drupal.tar.gz -C #{tmpAppDir}/drupal --strip-components=1", "rm drupal.tar.gz"]
   
   if db
     # Copy the sample config
@@ -72,8 +72,9 @@ installWordpress = (formData, dbinfo, callback)->
     
     # Put correct settings
     
-    # @todo -- Make sed work.
-
+    commands.push "if [ ! -f /Users/#{nickname}/drush/drush.php ]; then curl --location http://ftp.drupal.org/files/projects/drush-7.x-5.8.tar.gz > drush.tar.gz; mkdir -p /Users/#{nickname}/drush; tar -xzvf drush.tar.gz -C /Users/#{nickname}/drush  --strip-components=1; echo 'export PATH=$PATH:/Users/#{nickname}/drush' >> /Users/#{nickname}/.bashrc; rm drush.tar.gz; fi"
+    commands.push "php /Users/#{nickname}/drush/drush.php -y --root=#{tmpAppDir}/drupal site-install standard --account-name=admin --account-pass=#{dbinfo.dbPass} --db-url=mysql://#{dbinfo.dbUser}:#{dbinfo.dbPass}@#{dbinfo.dbHost}/#{dbinfo.dbName}"
+    
     #commands.push "sed -i '116,124 s/^..//' '#{tmpAppDir}/drupal/sites/default/settings.php'"
     #commands.push "sed -i '213d' '#{tmpAppDir}/drupal/sites/default/settings.php'"
     #commands.push "sed -i '118 s/databasename/#{dbinfo.dbName}/g' '#{tmpAppDir}/drupal/sites/default/settings.php'"`
@@ -98,7 +99,10 @@ installWordpress = (formData, dbinfo, callback)->
     if cmds.length == index or not command
       parseOutput "<br>#############"
       parseOutput "<br>Drupal 7 successfully installed to: #{userDir}#{path}"
-      parseOutput "<br>#############<br>"
+      parseOutput "<br>#############<br><br>"
+      parseOutput "<br>####IMPORTANT####<br>"
+      parseOutput "<br>username: admin<br>"
+      parseOutput "<br>password: #{dbinfo.dbPass}<br>"
       parseOutput "<br><br><br>"
       appStorage.fetchValue 'blogs', (blogs)->
         blogs or= []
@@ -108,7 +112,7 @@ installWordpress = (formData, dbinfo, callback)->
       
       # It's gonna be le{wait for it....}gendary.
       KD.utils.wait 1000, ->
-        appManager.openFileWithApplication "http://#{nickname}.koding.com/#{path}/install.php", "Viewer"
+        appManager.openFileWithApplication "http://#{nickname}.koding.com/#{path}/", "Viewer"
       
     else
       parseOutput "$ #{command}<br/>"
