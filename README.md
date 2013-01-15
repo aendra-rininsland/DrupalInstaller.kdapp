@@ -2,7 +2,7 @@
 
 by [Ændrew Rininsland](http://www.aendrew.com) ([@aendrew](http://www.koding.com/aendrew))
  
-Based on WordpressInstaller by Gokmen Goksel ([@gokmen](http://www.koding.com/gokmen))
+Based on WordpressInstaller by Gökmen Göksel ([@gokmen](http://www.koding.com/gokmen))
  
 ## To use:
 In a Koding terminal, type the following:                                                                                                   
