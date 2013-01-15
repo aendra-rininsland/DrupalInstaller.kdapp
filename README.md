@@ -8,7 +8,7 @@ Based on WordpressInstaller by Gökmen Göksel ([@gokmen](http://www.koding.com/
 In a Koding terminal, type the following:                                                                                                   
 `git clone https://github.com/aendrew/DrupalInstaller.kdapp.git ~/Applications/DrupalInstaller.kdapp`                                           
  
-Or search for "aendrew" using Koding's excellent Github Dashboard app to install directly.                                                  
+Or search for "aendrew" using Koding's excellent [Dashboard for Github](https://koding.com/Apps/github-dashboard) app to install directly.                                                  
 
 Currently a work-in-progress. Having problems? Please add them to the [issue queue](https://github.com/aendrew/DrupalInstaller.kdapp/issues)!
 
